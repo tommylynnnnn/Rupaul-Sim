@@ -1,41 +1,23 @@
 const queens = [
-
-{
-    name:"Jinkx Monsoon",
-    image:"images/jinkx.jpg"
-},
-
-{
-    name:"Alaska",
-    image:"images/alaska.jpg"
-},
-
-{
-    name:"Bianca Del Rio",
-    image:"images/bianca.jpg"
-},
-
-{
-    name:"Sasha Colby",
-    image:"images/sasha.jpg"
-}
-
+    { name: "Jinkx Monsoon", image: "images/jinkx.jpg", trackRecord: [] },
+    { name: "Alaska", image: "images/alaska.jpg", trackRecord: [] },
+    { name: "Bianca Del Rio", image: "images/bianca.jpg", trackRecord: [] },
+    { name: "Sasha Colby", image: "images/sasha.jpg", trackRecord: [] }
 ];
 
 let selectedQueens = [];
 let episodes = [];
 let currentEpisode = 0;
 
-const queenGrid =
-document.getElementById("queenGrid");
+// --------------------
+// QUEEN GRID
+// --------------------
+const queenGrid = document.getElementById("queenGrid");
 
 queens.forEach(queen => {
 
-    const card =
-    document.createElement("div");
-
-    card.className =
-    "queen-card";
+    const card = document.createElement("div");
+    card.className = "queen-card";
 
     card.innerHTML = `
         <img src="${queen.image}">
@@ -44,250 +26,249 @@ queens.forEach(queen => {
 
     card.onclick = () => {
 
-        if(selectedQueens.includes(queen)){
+        if (selectedQueens.includes(queen)) {
 
-            selectedQueens =
-            selectedQueens.filter(
-                q => q !== queen
-            );
+            selectedQueens = selectedQueens.filter(q => q !== queen);
+            card.classList.remove("selected");
 
-            card.classList.remove(
-                "selected"
-            );
+        } else {
 
-        }else{
-
-            selectedQueens.push(
-                queen
-            );
-
-            card.classList.add(
-                "selected"
-            );
+            selectedQueens.push(queen);
+            card.classList.add("selected");
 
         }
 
     };
 
     queenGrid.appendChild(card);
-
 });
 
-function showPage(id){
+// --------------------
+// PAGE SYSTEM
+// --------------------
+function showPage(id) {
 
-    document
-    .querySelectorAll(".page")
-    .forEach(page => {
-
-        page.classList.remove(
-            "active"
-        );
-
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
     });
 
-    document
-    .getElementById(id)
-    .classList.add(
-        "active"
-    );
-
+    document.getElementById(id).classList.add("active");
 }
 
-function goToSetup(){
-
+function goToSetup() {
     showPage("setupPage");
-
 }
 
-function goToEpisodes(){
-
-    showPage(
-        "episodeSetupPage"
-    );
-
+function goToEpisodes() {
+    showPage("episodeSetupPage");
 }
 
-function addEpisode(){
+// --------------------
+// EPISODES
+// --------------------
+function addEpisode() {
 
-    const name =
-    document
-    .getElementById(
-        "episodeName"
-    ).value;
+    const name = document.getElementById("episodeName").value;
+    const challenge = document.getElementById("challengeType").value;
 
-    const challenge =
-    document
-    .getElementById(
-        "challengeType"
-    ).value;
+    if (!name) return;
 
     episodes.push({
-
         name,
         challenge
-
     });
 
-    renderEpisodes();
+    document.getElementById("episodeName").value = "";
 
+    renderEpisodes();
 }
 
-function renderEpisodes(){
+function renderEpisodes() {
 
-    const list =
-    document.getElementById(
-        "episodeList"
-    );
-
+    const list = document.getElementById("episodeList");
     list.innerHTML = "";
 
-    episodes.forEach(ep => {
+    episodes.forEach((ep, i) => {
 
-        const li =
-        document.createElement(
-            "li"
-        );
-
-        li.textContent =
-        `${ep.name} (${ep.challenge})`;
-
+        const li = document.createElement("li");
+        li.textContent = `EP${i + 1}: ${ep.name} (${ep.challenge})`;
         list.appendChild(li);
 
     });
-
 }
 
-function goToOverview(){
+// --------------------
+// OVERVIEW
+// --------------------
+function goToOverview() {
 
-    document
-    .getElementById(
-        "overview"
-    ).innerHTML = `
-
-        <h3>
-            Queens:
-            ${selectedQueens.length}
-        </h3>
-
-        <h3>
-            Episodes:
-            ${episodes.length}
-        </h3>
-
+    document.getElementById("overview").innerHTML = `
+        <h3>Queens: ${selectedQueens.length}</h3>
+        <h3>Episodes: ${episodes.length}</h3>
     `;
 
-    showPage(
-        "overviewPage"
-    );
-
+    showPage("overviewPage");
 }
 
-function startSeason(){
+// --------------------
+// START SEASON
+// --------------------
+function startSeason() {
 
     currentEpisode = 0;
 
-    showPage(
-        "simulationPage"
-    );
+    // reset track records
+    selectedQueens.forEach(q => q.trackRecord = []);
 
+    showPage("simulationPage");
     loadEpisode();
-
 }
 
-function loadEpisode(){
+// --------------------
+// LOAD EPISODE
+// --------------------
+function loadEpisode() {
 
-    if(
-        currentEpisode >=
-        episodes.length
-    ){
+    const title = document.getElementById("episodeTitle");
+    const results = document.getElementById("episodeResults");
 
-        document
-        .getElementById(
-            "episodeTitle"
-        ).innerText =
-        "Season Complete!";
+    if (currentEpisode >= episodes.length) {
 
-        document
-        .getElementById(
-            "episodeResults"
-        ).innerHTML =
-        "<h2>Winner Coming Soon</h2>";
-
+        title.innerText = "Season Complete!";
+        results.innerHTML = "<h2>👑 Final Winner TBD System Coming Next</h2>";
         return;
 
     }
 
-    document
-    .getElementById(
-        "episodeTitle"
-    ).innerText =
-    episodes[currentEpisode].name;
-
+    title.innerText = episodes[currentEpisode].name;
+    results.innerHTML = "<p>Ready to simulate episode...</p>";
 }
 
-function simulateEpisode(){
+// --------------------
+// SIMULATION CORE
+// --------------------
+function simulateEpisode() {
 
-    if(
-        currentEpisode >=
-        episodes.length
-    ){
-        return;
-    }
+    if (currentEpisode >= episodes.length) return;
 
-    let ranking =
-    [...selectedQueens];
+    let ep = episodes[currentEpisode];
 
-    ranking.sort(
-        () =>
-        Math.random() - 0.5
-    );
+    let ranking = [...selectedQueens];
 
-    const winner =
-    ranking[0];
+    // soft randomness shuffle
+    ranking.sort(() => Math.random() - 0.5);
 
-    const bottom2 =
-    ranking.slice(-2);
+    const winner = ranking[0];
 
-    const eliminated =
-    bottom2[
-        Math.floor(
-            Math.random()*2
-        )
-    ];
+    const high = ranking.slice(1, 3);
 
-    selectedQueens =
-    selectedQueens.filter(
-        q =>
-        q !== eliminated
-    );
+    const safe = ranking.slice(3, ranking.length - 2);
 
-    document
-    .getElementById(
-        "episodeResults"
-    ).innerHTML = `
+    const bottom2 = ranking.slice(-2);
 
-        <h2>
-            Winner:
-            ${winner.name}
-        </h2>
+    const eliminated = bottom2[Math.floor(Math.random() * 2)];
 
-        <h3>
-            Bottom 2
-        </h3>
+    // --------------------
+    // BUILD EPISODE DISPLAY
+    // --------------------
+    const container = document.getElementById("episodeResults");
 
-        <p>
-            ${bottom2[0].name}
-            vs
-            ${bottom2[1].name}
-        </p>
+    container.innerHTML = `
+        <h2>${ep.name}</h2>
+        <h3>Challenge: ${ep.challenge}</h3>
 
-        <h3>
-            Eliminated:
-            ${eliminated.name}
-        </h3>
+        <div class="result-grid" id="resultGrid"></div>
 
+        <h2>Track Record</h2>
+        <table id="trackTable"></table>
     `;
+
+    const grid = document.getElementById("resultGrid");
+
+    function addCard(q, placement) {
+
+        const div = document.createElement("div");
+        div.className = "result-card";
+
+        div.innerHTML = `
+            <img src="${q.image}">
+            <h4>${q.name}</h4>
+            <div class="badge ${placement}">
+                ${placement}
+            </div>
+        `;
+
+        grid.appendChild(div);
+    }
+
+    // placements
+    addCard(winner, "WIN");
+
+    high.forEach(q => addCard(q, "HIGH"));
+    safe.forEach(q => addCard(q, "SAFE"));
+    bottom2.forEach(q => addCard(q, "BTM"));
+
+    addCard(eliminated, "ELIM");
+
+    // --------------------
+    // TRACK RECORD UPDATE
+    // --------------------
+    ranking.forEach(q => {
+
+        let placement =
+            q === winner ? "WIN" :
+            high.includes(q) ? "HIGH" :
+            safe.includes(q) ? "SAFE" :
+            bottom2.includes(q) ? "BTM" :
+            "ELIM";
+
+        q.trackRecord.push(placement);
+
+    });
+
+    renderTrackTable();
+
+    // remove eliminated queen
+    selectedQueens = selectedQueens.filter(q => q !== eliminated);
 
     currentEpisode++;
 
+    loadEpisode();
+}
+
+// --------------------
+// TRACK RECORD TABLE
+// --------------------
+function renderTrackTable() {
+
+    const table = document.getElementById("trackTable");
+
+    table.innerHTML = "";
+
+    // header
+    let header = "<tr><th>Queen</th>";
+
+    const maxEpisodes = currentEpisode;
+
+    for (let i = 0; i < maxEpisodes; i++) {
+        header += `<th>E${i + 1}</th>`;
+    }
+
+    header += "</tr>";
+    table.innerHTML += header;
+
+    // rows
+    selectedQueens.forEach(q => {
+
+        let row = `<tr><td>${q.name}</td>`;
+
+        q.trackRecord.forEach(p => {
+            row += `<td>${p}</td>`;
+        });
+
+        row += "</tr>";
+
+        table.innerHTML += row;
+
+    });
 }
