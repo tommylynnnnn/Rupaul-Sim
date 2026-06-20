@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag Race Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>🏁 Drag Race Simulator</h1>
+    </header>
+
+    <div class="container">
+
+        <section class="panel">
+            <h2>Select Queens</h2>
+
+            <div id="queenGrid" class="queen-grid"></div>
+        </section>
+
+        <section class="panel">
+            <h2>Season Setup</h2>
+
+            <label>Season Name</label>
+            <input type="text" id="seasonName" placeholder="Season 1">
+
+            <label>Season Format</label>
+            <select id="seasonFormat">
+                <option>Standard</option>
+                <option>All Stars</option>
+                <option>Bracket Tournament</option>
+            </select>
+
+            <button onclick="startSeason()">
+                Start Season
+            </button>
+        </section>
+
+        <section class="panel">
+            <h2>Episodes</h2>
+
+            <input type="text" id="episodeName" placeholder="Episode Name">
+
+            <select id="challengeType">
+                <option>Talent Show</option>
+                <option>Acting</option>
+                <option>Design</option>
+                <option>Snatch Game</option>
+                <option>Rusical</option>
+                <option>Roast</option>
+            </select>
+
+            <button onclick="addEpisode()">
+                Add Episode
+            </button>
+
+            <ul id="episodeList"></ul>
+        </section>
+
+        <section class="panel">
+            <h2>Simulation</h2>
+
+            <button onclick="simulateEpisode()">
+                Simulate Next Episode
+            </button>
+
+            <div id="results"></div>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
