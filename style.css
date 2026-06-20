@@ -1,0 +1,68 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: white;
+}
+
+header {
+    background: #ff4da6;
+    text-align: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.panel {
+    background: #222;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+input,
+select,
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+}
+
+button {
+    background: #ff4da6;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.queen-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 120px);
+    gap: 10px;
+}
+
+.queen-card {
+    background: #333;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.queen-card.selected {
+    outline: 3px solid gold;
+}
+
+#results {
+    margin-top: 20px;
+    font-size: 18px;
+}
