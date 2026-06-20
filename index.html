@@ -8,113 +8,114 @@
 </head>
 <body>
 
-    <!-- QUEEN SELECTION -->
-    <div class="page active" id="queenPage">
+<!-- TOP BAR -->
+<div class="topbar">
+    <h1>🏁 Drag Race Simulator</h1>
+</div>
 
-        <h1>🏁 Drag Race Simulator</h1>
+<div class="app">
 
-        <h2>Select Your Queens</h2>
+    <!-- SIDEBAR NAV -->
+    <div class="sidebar">
 
-        <div id="queenGrid" class="queen-grid"></div>
-
-        <button onclick="goToSetup()">
-            Continue →
-        </button>
-
-    </div>
-
-    <!-- SEASON SETUP -->
-    <div class="page" id="setupPage">
-
-        <h1>Season Setup</h1>
-
-        <input
-            type="text"
-            id="seasonName"
-            placeholder="Season Name"
-        >
-
-        <label>Season Format</label>
-
-        <select id="seasonFormat">
-
-            <option>Standard</option>
-
-            <option>All Stars</option>
-
-            <option>Bracket Tournament</option>
-
-        </select>
-
-        <button onclick="goToEpisodes()">
-            Continue →
-        </button>
+        <button onclick="showPage('queenPage')">Queens</button>
+        <button onclick="showPage('setupPage')">Season Setup</button>
+        <button onclick="showPage('episodeSetupPage')">Episodes</button>
+        <button onclick="showPage('overviewPage')">Overview</button>
+        <button onclick="showPage('simulationPage')">Simulation</button>
 
     </div>
 
-    <!-- EPISODE CREATOR -->
-    <div class="page" id="episodeSetupPage">
+    <!-- MAIN CONTENT -->
+    <div class="main">
 
-        <h1>Episode Setup</h1>
+        <!-- QUEEN SELECTION -->
+        <div class="page active" id="queenPage">
 
-        <input
-            type="text"
-            id="episodeName"
-            placeholder="Episode Name"
-        >
+            <h2>Select Your Queens</h2>
 
-        <select id="challengeType">
+            <div id="queenGrid" class="queen-grid"></div>
 
-            <option>Talent Show</option>
-            <option>Snatch Game</option>
-            <option>Design</option>
-            <option>Acting</option>
-            <option>Rusical</option>
-            <option>Roast</option>
+            <button onclick="goToSetup()">Continue →</button>
 
-        </select>
+        </div>
 
-        <button onclick="addEpisode()">
-            Add Episode
-        </button>
+        <!-- SEASON SETUP -->
+        <div class="page" id="setupPage">
 
-        <ul id="episodeList"></ul>
+            <h2>Season Setup</h2>
 
-        <button onclick="goToOverview()">
-            Continue →
-        </button>
+            <input type="text" id="seasonName" placeholder="Season Name">
+
+            <label>Season Format</label>
+            <select id="seasonFormat">
+                <option>Standard</option>
+                <option>All Stars</option>
+                <option>Bracket Tournament</option>
+            </select>
+
+            <button onclick="goToEpisodes()">Continue →</button>
+
+        </div>
+
+        <!-- EPISODE SETUP -->
+        <div class="page" id="episodeSetupPage">
+
+            <h2>Episode Setup</h2>
+
+            <input type="text" id="episodeName" placeholder="Episode Name">
+
+            <select id="challengeType">
+                <option>Talent Show</option>
+                <option>Snatch Game</option>
+                <option>Design</option>
+                <option>Acting</option>
+                <option>Rusical</option>
+                <option>Roast</option>
+            </select>
+
+            <button onclick="addEpisode()">Add Episode</button>
+
+            <ul id="episodeList"></ul>
+
+            <button onclick="goToOverview()">Continue →</button>
+
+        </div>
+
+        <!-- OVERVIEW -->
+        <div class="page" id="overviewPage">
+
+            <h2>Season Overview</h2>
+
+            <div id="overview"></div>
+
+            <button onclick="startSeason()">Begin Simulation</button>
+
+        </div>
+
+        <!-- SIMULATION -->
+        <div class="page" id="simulationPage">
+
+            <h2 id="episodeTitle">Episode</h2>
+
+            <div class="stage">
+
+                <div id="episodeResults">
+                    <p>Press simulate to begin episode.</p>
+                </div>
+
+            </div>
+
+            <button onclick="simulateEpisode()">
+                Simulate Episode
+            </button>
+
+        </div>
 
     </div>
+</div>
 
-    <!-- OVERVIEW -->
-    <div class="page" id="overviewPage">
-
-        <h1>Season Overview</h1>
-
-        <div id="overview"></div>
-
-        <button onclick="startSeason()">
-            Begin Simulation
-        </button>
-
-    </div>
-
-    <!-- SIMULATION -->
-    <div class="page" id="simulationPage">
-
-        <h1 id="episodeTitle">
-            Episode
-        </h1>
-
-        <div id="episodeResults"></div>
-
-        <button onclick="simulateEpisode()">
-            Simulate Episode
-        </button>
-
-    </div>
-
-    <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
