@@ -1,149 +1,293 @@
 const queens = [
-    {
-        name: "Jinkx Monsoon",
-        comedy: 100,
-        acting: 95,
-        design: 60
-    },
-    {
-        name: "Alaska",
-        comedy: 90,
-        acting: 85,
-        design: 70
-    },
-    {
-        name: "Bianca Del Rio",
-        comedy: 98,
-        acting: 90,
-        design: 80
-    },
-    {
-        name: "Sasha Colby",
-        comedy: 75,
-        acting: 85,
-        design: 90
-    }
+
+{
+    name:"Jinkx Monsoon",
+    image:"images/jinkx.jpg"
+},
+
+{
+    name:"Alaska",
+    image:"images/alaska.jpg"
+},
+
+{
+    name:"Bianca Del Rio",
+    image:"images/bianca.jpg"
+},
+
+{
+    name:"Sasha Colby",
+    image:"images/sasha.jpg"
+}
+
 ];
 
 let selectedQueens = [];
 let episodes = [];
 let currentEpisode = 0;
 
-const queenGrid = document.getElementById("queenGrid");
+const queenGrid =
+document.getElementById("queenGrid");
 
 queens.forEach(queen => {
 
-    const card = document.createElement("div");
-    card.classList.add("queen-card");
+    const card =
+    document.createElement("div");
+
+    card.className =
+    "queen-card";
 
     card.innerHTML = `
+        <img src="${queen.image}">
         <h3>${queen.name}</h3>
     `;
 
     card.onclick = () => {
 
-        if (selectedQueens.includes(queen)) {
+        if(selectedQueens.includes(queen)){
+
             selectedQueens =
-                selectedQueens.filter(q => q !== queen);
+            selectedQueens.filter(
+                q => q !== queen
+            );
 
-            card.classList.remove("selected");
-        } else {
-            selectedQueens.push(queen);
+            card.classList.remove(
+                "selected"
+            );
 
-            card.classList.add("selected");
+        }else{
+
+            selectedQueens.push(
+                queen
+            );
+
+            card.classList.add(
+                "selected"
+            );
+
         }
+
     };
 
     queenGrid.appendChild(card);
+
 });
 
-function addEpisode() {
+function showPage(id){
+
+    document
+    .querySelectorAll(".page")
+    .forEach(page => {
+
+        page.classList.remove(
+            "active"
+        );
+
+    });
+
+    document
+    .getElementById(id)
+    .classList.add(
+        "active"
+    );
+
+}
+
+function goToSetup(){
+
+    showPage("setupPage");
+
+}
+
+function goToEpisodes(){
+
+    showPage(
+        "episodeSetupPage"
+    );
+
+}
+
+function addEpisode(){
 
     const name =
-        document.getElementById("episodeName").value;
+    document
+    .getElementById(
+        "episodeName"
+    ).value;
 
     const challenge =
-        document.getElementById("challengeType").value;
+    document
+    .getElementById(
+        "challengeType"
+    ).value;
 
     episodes.push({
+
         name,
         challenge
+
     });
 
     renderEpisodes();
+
 }
 
-function renderEpisodes() {
+function renderEpisodes(){
 
     const list =
-        document.getElementById("episodeList");
+    document.getElementById(
+        "episodeList"
+    );
 
     list.innerHTML = "";
 
     episodes.forEach(ep => {
 
         const li =
-            document.createElement("li");
+        document.createElement(
+            "li"
+        );
 
         li.textContent =
-            `${ep.name} (${ep.challenge})`;
+        `${ep.name} (${ep.challenge})`;
 
         list.appendChild(li);
+
     });
+
 }
 
-function startSeason() {
+function goToOverview(){
 
-    alert(
-        `Season started with ${selectedQueens.length} queens!`
+    document
+    .getElementById(
+        "overview"
+    ).innerHTML = `
+
+        <h3>
+            Queens:
+            ${selectedQueens.length}
+        </h3>
+
+        <h3>
+            Episodes:
+            ${episodes.length}
+        </h3>
+
+    `;
+
+    showPage(
+        "overviewPage"
     );
+
 }
 
-function simulateEpisode() {
+function startSeason(){
 
-    if (
-        currentEpisode >= episodes.length ||
-        selectedQueens.length < 2
-    ) {
+    currentEpisode = 0;
+
+    showPage(
+        "simulationPage"
+    );
+
+    loadEpisode();
+
+}
+
+function loadEpisode(){
+
+    if(
+        currentEpisode >=
+        episodes.length
+    ){
+
+        document
+        .getElementById(
+            "episodeTitle"
+        ).innerText =
+        "Season Complete!";
+
+        document
+        .getElementById(
+            "episodeResults"
+        ).innerHTML =
+        "<h2>Winner Coming Soon</h2>";
+
+        return;
+
+    }
+
+    document
+    .getElementById(
+        "episodeTitle"
+    ).innerText =
+    episodes[currentEpisode].name;
+
+}
+
+function simulateEpisode(){
+
+    if(
+        currentEpisode >=
+        episodes.length
+    ){
         return;
     }
 
-    const ep = episodes[currentEpisode];
+    let ranking =
+    [...selectedQueens];
 
-    let rankings = [...selectedQueens];
-
-    rankings.sort(() =>
+    ranking.sort(
+        () =>
         Math.random() - 0.5
     );
 
-    const winner = rankings[0];
+    const winner =
+    ranking[0];
 
     const bottom2 =
-        rankings.slice(-2);
+    ranking.slice(-2);
 
     const eliminated =
-        bottom2[Math.floor(Math.random() * 2)];
+    bottom2[
+        Math.floor(
+            Math.random()*2
+        )
+    ];
 
     selectedQueens =
-        selectedQueens.filter(
-            q => q !== eliminated
-        );
+    selectedQueens.filter(
+        q =>
+        q !== eliminated
+    );
 
-    document.getElementById("results")
-        .innerHTML = `
-        <h3>${ep.name}</h3>
+    document
+    .getElementById(
+        "episodeResults"
+    ).innerHTML = `
 
-        <p>🏆 Winner:
-        ${winner.name}</p>
+        <h2>
+            Winner:
+            ${winner.name}
+        </h2>
 
-        <p>⚠ Bottom:
-        ${bottom2[0].name}
-        &
-        ${bottom2[1].name}</p>
+        <h3>
+            Bottom 2
+        </h3>
 
-        <p>❌ Eliminated:
-        ${eliminated.name}</p>
+        <p>
+            ${bottom2[0].name}
+            vs
+            ${bottom2[1].name}
+        </p>
+
+        <h3>
+            Eliminated:
+            ${eliminated.name}
+        </h3>
+
     `;
 
     currentEpisode++;
+
 }
